@@ -5,11 +5,19 @@
  * @returns {boolean}
  */
 function isWhitelisted(email) {
-    return EMAIL_WHITELIST.includes(email) || EMAIL_SUFFIX_WHITELIST.includes(email.split("@")[1]);
+    if (!email)
+        return false;
+    else
+        return EMAIL_WHITELIST.includes(email) || EMAIL_SUFFIX_WHITELIST.includes(email.split("@")[1]);
 }
 
 function getSenderEmailFromMessage(message) {
-    return /<(.*)>/.exec(message.getFrom()).slice(-1)[0];
+    let sender = message.getFrom();
+
+    if (sender.includes("<"))
+        return /<(.*)>/.exec(message.getFrom()).slice(-1)[0];
+    else
+        return sender;
 }
 
 function reduceContentWhitespace(content) {
